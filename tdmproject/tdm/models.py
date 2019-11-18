@@ -20,7 +20,7 @@ class Customer(models.Model):
     street_two = models.CharField(max_length=64,blank=True)
     city = models.CharField(max_length=64,blank=True)
     state = models.CharField(max_length=64,blank=True)
-    zipcode = models.IntegerField(blank=True)
+    zipcode = models.IntegerField(blank=True, null=True)
     customer_type = models.CharField(max_length=64,blank=True)
     phone = PhoneNumberField(blank=True)
     phone_alt = PhoneNumberField(blank=True)
