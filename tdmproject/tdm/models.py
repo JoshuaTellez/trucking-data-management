@@ -13,6 +13,10 @@ class Driver(models.Model):
     truck_number = models.IntegerField(blank=True)
     trailer = models.CharField(max_length=64,blank=True)
 
+    def __str__(self):
+        return self.driver_name
+
+
 class Customer(models.Model):
     customer_name = models.CharField(max_length=64,blank=True)
     contact_name = models.CharField(max_length=64,blank=True)
@@ -29,9 +33,13 @@ class Customer(models.Model):
     website = models.URLField(blank=True)
     notes = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.customer_name
+
 class Load(models.Model):
-    # Foreign keys
+    # # Foreign keys
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True)
 
     # Model Fields
     load_date = models.DateField(blank=True)
@@ -49,4 +57,5 @@ class Load(models.Model):
     invoice = models.FileField(blank=True)
     driver_settlement = models.CharField(max_length=64,blank=True)
 
-
+    def __str__(self):
+        return self.pk
