@@ -18,11 +18,15 @@ class Carrier(models.Model):
     mc = models.CharField(max_length=64, blank=True, null=True)
     dot = models.CharField(max_length=64, blank=True, null=True)
     w9 = models.FileField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.company_name
 
 
 class Driver(models.Model):
     # Foreign keys
-    Carrier = models.ForeignKey(Carrier, on_delete=models.SET_NULL, null=True)
+    Carrier = models.ForeignKey(Carrier, on_delete=models.SET_NULL, blank=True, null=True)
 
     first_name = models.CharField(max_length=64, blank=True, null=True)
     last_name = models.CharField(max_length=64, blank=True, null=True)
@@ -43,10 +47,11 @@ class Driver(models.Model):
         ('SD', 'StepDeck'),
         ('OT', 'Other'),
     ]
-    trailer = models.CharField(choices=TRAILER_TYPES, blank=True, null=True)
+    trailer = models.CharField(max_length=64, choices=TRAILER_TYPES, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.driver_name
+        return self.first_name + ' ' + self.last_name
 
 
 class Customer(models.Model):
@@ -71,9 +76,9 @@ class Customer(models.Model):
 
 class Load(models.Model):
     # Foreign keys
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True)
-    carrier = models.ForeignKey(Carrier, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
+    carrier = models.ForeignKey(Carrier, on_delete=models.SET_NULL, blank=True, null=True)
 
     # Model Fields
     load_date = models.DateField(blank=True, null=True)
@@ -88,7 +93,7 @@ class Load(models.Model):
         ('CL', 'Closed'),
         ('MS', 'Missing'),
     ]
-    status = models.CharField(choices=STATUS_OPTIONS, blank=True, null=True)
+    status = models.CharField(max_length=64, choices=STATUS_OPTIONS, blank=True, null=True)
     commodity = models.CharField(max_length=64, blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     driver_rate = models.FloatField(blank=True, null=True)
